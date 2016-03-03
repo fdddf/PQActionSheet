@@ -17,9 +17,6 @@
 @property (strong,nonatomic) UITableView *tableView;
 @property (strong,nonatomic) UIView *backgroundView;
 
-
-@property (strong,nonatomic) NSString *titleText;
-@property (strong,nonatomic) NSString *cancelText;
 @property (strong,nonatomic) NSMutableArray *otherButtons;
 
 @property (assign,nonatomic) CGFloat tableViewHeight;
@@ -120,6 +117,12 @@
         
     }
     return self;
+}
+
+- (void)dealloc {
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
 }
 
 #pragma mark - Public Method
@@ -243,6 +246,13 @@
     
     self.hidden = YES;
     self.tableView.hidden = YES;
+    
+    
+    //监听屏幕旋转
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(statusBarOrientationChange:)
+                                                 name:UIApplicationDidChangeStatusBarOrientationNotification
+                                               object:nil];
     
 }
 
@@ -408,7 +418,8 @@
         
         // 加上分割线
         UIImageView *sepLine = [[UIImageView alloc]initWithImage:[self imageWithUIColor:[UIColor grayColor]]];
-        sepLine.frame = CGRectMake(0, ACTION_SHEET_BTN_HEIGHT - 0.3f, self.tableView.bounds.size.width, 0.3f);
+        sepLine.frame = CGRectMake(0, ACTION_SHEET_BTN_HEIGHT - 0.3f, [UIScreen mainScreen].bounds.size.width, 0.3f);
+        [sepLine setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
         [cell addSubview:sepLine];
         
     }
@@ -462,6 +473,48 @@
     }
     
     return 0;
+    
+}
+
+
+#pragma mark - Observer
+
+// 监听屏幕旋转方向
+-(void)statusBarOrientationChange:(NSNotification *)notification {
+    
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    
+    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    
+    self.frame = CGRectMake(0, 0, screenSize.width, screenSize.height);
+    
+    
+    if(orientation != UIInterfaceOrientationPortrait) {
+        
+        if([UIDevice currentDevice].systemVersion.floatValue < 8.0f) {
+            
+            self.frame = CGRectMake(0, 0, screenSize.height, screenSize.width);
+            
+        }
+    }
+    
+    self.backgroundView.frame = self.frame;
+    
+    CGRect tableViewRect = self.tableView.frame;
+    tableViewRect.size.width = self.frame.size.width;
+    tableViewRect.size.height = self.frame.size.height;
+    
+    if(orientation == UIInterfaceOrientationPortrait) {
+        
+        tableViewRect.origin.y+=fabs(screenSize.height-screenSize.width);
+    }else {
+        tableViewRect.origin.y-=fabs(screenSize.height-screenSize.width);
+    }
+    
+    
+    self.tableView.frame = tableViewRect;
+    
+    [self.tableView reloadData];
     
 }
 

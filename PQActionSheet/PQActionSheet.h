@@ -16,6 +16,8 @@ typedef void(^ClickedIndexBlock)(NSInteger index);
 
 
 @property (weak,nonatomic) id<PQActionSheetDelegate> delegate;
+@property (strong,nonatomic) NSString *titleText;
+@property (strong,nonatomic) NSString *cancelText;
 
 
 /**
