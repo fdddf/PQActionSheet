@@ -10,4 +10,4 @@
 
 ##截图
 
-![screenshot](Screenshot/screenshot.jpg)
+![screenshot](Screenshot/screenshot.gif)
