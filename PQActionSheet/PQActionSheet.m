@@ -133,7 +133,7 @@
 - (void)show
 {
     
-    __block typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     
     if([_delegate respondsToSelector:@selector(willPresentActionSheet:)]) {
         
@@ -174,7 +174,7 @@
  */
 -(void)hide
 {
-    __block typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     
     
     [UIView animateWithDuration:0.3 animations:^{
