@@ -149,7 +149,8 @@
     [UIView animateWithDuration:0.3 animations:^{
         
         CGRect frame = weakSelf.tableView.frame;
-        frame.origin.y-=weakSelf.tableViewHeight;
+        CGSize screenSisze = [UIScreen mainScreen].bounds.size;
+        frame.origin.y = screenSisze.height - self.tableViewHeight;
         
         weakSelf.tableView.frame = frame;
         
@@ -179,7 +180,8 @@
     [UIView animateWithDuration:0.3 animations:^{
         
         CGRect frame = weakSelf.tableView.frame;
-        frame.origin.y+=weakSelf.tableViewHeight;
+        CGSize screenSisze = [UIScreen mainScreen].bounds.size;
+        frame.origin.y = screenSisze.height + self.tableViewHeight;
         
         weakSelf.tableView.frame = frame;
         
@@ -209,6 +211,9 @@
 
 #pragma mark - Private
 
+/**
+ *  @brief 初始化子视图
+ */
 - (void)installSubViews {
     
     self.frame = [UIScreen mainScreen].bounds;
@@ -227,6 +232,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [self addSubview:_tableView];
     
     // TableView加上高斯模糊效果
@@ -488,7 +494,7 @@
     
     self.frame = CGRectMake(0, 0, screenSize.width, screenSize.height);
     
-    
+    // iOS8以下宽高不会自动交换
     if(orientation != UIInterfaceOrientationPortrait) {
         
         if([UIDevice currentDevice].systemVersion.floatValue < 8.0f) {
@@ -501,14 +507,13 @@
     self.backgroundView.frame = self.frame;
     
     CGRect tableViewRect = self.tableView.frame;
-    tableViewRect.size.width = self.frame.size.width;
-    tableViewRect.size.height = self.frame.size.height;
+//    tableViewRect.size.width = self.frame.size.width;
+//    tableViewRect.size.height = self.frame.size.height;
     
     if(orientation == UIInterfaceOrientationPortrait) {
-        
         tableViewRect.origin.y+=fabs(screenSize.height-screenSize.width);
     }else {
-        tableViewRect.origin.y-=fabs(screenSize.height-screenSize.width);
+        tableViewRect.origin.y = self.frame.size.height - self.tableViewHeight;
     }
     
     
