@@ -18,7 +18,7 @@
 
 ```
 target 'MyApp' do
-  pod 'PQActionSheet', '~> 0.1'
+  pod 'PQActionSheet', '~> 0.1.2'
 end
 
 ```
