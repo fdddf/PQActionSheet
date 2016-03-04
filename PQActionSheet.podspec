@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "PQActionSheet"
-  s.version          = "0.1.1"
+  s.version          = "0.1.2"
   s.summary          = "仿微信的ActionSheet，比UIActionSheet用法更简便。"
 
 
