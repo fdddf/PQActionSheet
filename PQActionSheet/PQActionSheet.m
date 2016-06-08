@@ -72,6 +72,15 @@
     return self;
 }
 
++ (instancetype)showWithTitle:(NSString *)title
+               clickedAtIndex:(ClickedIndexBlock)block
+            cancelButtonTitle:(NSString *)cancelButtonTitle
+            otherButtonTitles:(NSArray *)otherButtonTitles
+{
+    PQActionSheet *sheet = [[PQActionSheet alloc] initWithTitle:title clickedAtIndex:block cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles];
+    [sheet show];
+    return sheet;
+}
 
 /**
  *  @brief 初始化PQActionSheet(Block回调结果)
@@ -86,31 +95,16 @@
 - (instancetype)initWithTitle:(NSString *)title
                clickedAtIndex:(ClickedIndexBlock)block
             cancelButtonTitle:(NSString *)cancelButtonTitle
-            otherButtonTitles:(NSString *)otherButtonTitles, ...
+            otherButtonTitles:(NSArray *)otherButtonTitles
 {
     self = [super init];
     if (self) {
-        
-        
-        //FIXME 宝宝还不知道如何传递可变参数，只能重复地再写一遍代码了
         
         self.titleText = [title copy];
         self.cancelText = [cancelButtonTitle copy];
         self.block = block;
         
-        self.otherButtons = [[NSMutableArray alloc]init];
-        
-        
-        // 获取可变参数
-        [_otherButtons addObject:otherButtonTitles];
-        va_list list;
-        NSString *curStr;
-        va_start(list, otherButtonTitles);
-        while ((curStr = va_arg(list, NSString *))) {
-            
-            [_otherButtons addObject:curStr];
-            
-        }
+        self.otherButtons = [[NSMutableArray alloc] initWithArray:otherButtonTitles copyItems:YES];
         
         //初始化子视图
         [self installSubViews];

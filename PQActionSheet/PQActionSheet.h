@@ -50,7 +50,7 @@ typedef void(^ClickedIndexBlock)(NSInteger index);
 - (instancetype)initWithTitle:(NSString *)title
                clickedAtIndex:(ClickedIndexBlock)block
             cancelButtonTitle:(NSString *)cancelButtonTitle
-            otherButtonTitles:(NSString *)otherButtonTitles, ...;
+            otherButtonTitles:(NSArray *)otherButtonTitles;
 
 
 
@@ -67,6 +67,22 @@ typedef void(^ClickedIndexBlock)(NSInteger index);
  *  @return 按钮的Index
  */
 - (NSInteger)addButtonWithTitle:(NSString *)title;
+
+
+/**
+ *  显示 ActionSheet
+ *
+ *  @param title             ActionSheet标题
+ *  @param block             Block回调选中的Index
+ *  @param cancelButtonTitle 取消按钮标题
+ *  @param otherButtonTitles 其他按钮标题
+ *
+ *  @return <#return value description#>
+ */
++ (instancetype)showWithTitle:(NSString *)title
+               clickedAtIndex:(ClickedIndexBlock)block
+            cancelButtonTitle:(NSString *)cancelButtonTitle
+            otherButtonTitles:(NSArray *)otherButtonTitles;
 
 
 @end
